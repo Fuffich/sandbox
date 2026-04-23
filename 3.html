@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цифровая песочница</title>
+        <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Ваши стили -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="custom-header" id="header">
+        <button id="menuToggle" class="menu-toggle" aria-label="Открыть меню">☰</button>
+        <div class="container">
+            <h1>Библиотека игр</h1>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="container-fluid main-wrapper">
+        <div class="row">
+            <!-- Боковое меню -->
+            <div class="col-lg-3">
+                <nav class="sidebar-menu menu">
+                    <h3>Меню</h3>
+                    <a class="nav-link" href="index.html">Главная</a>
+                    <a class="nav-link" href="2.html">О проекте</a>
+                    <a class="nav-link" href="6.html">Цифровая песочница</a>
+                    <a class="nav-link" href="3.html">Библиотека игр</a>
+                    <a class="nav-link" href="4.html">Методическая копилка</a>
+                    <a class="nav-link" href="5.html">Опрос</a>
+                </nav>
+            </div>
+
+            <!-- Основной контент -->
+            <div class="col-lg-9">
+
+                <section class="content-section loginSection">
+                  <h2>Вход в личный кабинет</h2>
+
+                  <div id="loginBlock">
+                    <input type="text" id="loginName" placeholder="Имя пользователя">
+                    <input type="password" id="loginPassword" placeholder="Пароль">
+                    <button id="loginBtn">Войти / Зарегистрироваться</button>
+                  </div>
+
+                  <div id="userPanel" style="display:none;">
+                    Привет, <span id="currentUser"></span>! 
+                    <button id="logoutBtn">Выйти</button>
+                  </div>
+                </section>
+
+
+                <section class="content-section" id="userStats" style="display:none;">
+                    <h3>📊 Статистика пользователя</h3>
+
+                    <div class="stats-cards">
+
+                        <div class="stat-card" align="center">
+                            <div class="stat-number" id="gamesPlayed">0</div>
+                            <div class="stat-title">Игр сыграно</div>
+                            <div class="stat-text">Всего попыток</div>
+                        </div>
+
+                        <div class="stat-card" align="center">
+                            <div class="stat-number" id="emotionAvg">0%</div>
+                            <div class="stat-title">Эмоции</div>
+                            <div class="stat-text">Средний результат</div>
+                        </div>
+
+                        <div class="stat-card" align="center">
+                            <div class="stat-number" id="memoryAvg">0%</div>
+                            <div class="stat-title">Память</div>
+                            <div class="stat-text">Средний результат</div>
+                        </div>
+
+                        
+                    </div>
+                </section>
+				
+                <section class="content-section" id="gamesMenu" style="display:none;">
+                    <h3>Игры</h3>
+
+                    <div class="stats-cards">
+                        <div class="stat-card" onclick="scrollToGame('emotionGame')" align="center">
+                            <div class="stat-number">😄</div>
+                            <div class="stat-title">Угадай эмоцию</div>
+                            <div class="stat-text">Определи эмоцию по изображению</div>
+                        </div>
+
+                        <div class="stat-card" onclick="scrollToGame('memoryGame')" align="center">
+                            <div class="stat-number">🧠</div>
+                            <div class="stat-title">Память</div>
+                            <div class="stat-text">Собери пары карточек</div>
+                        </div>
+
+                        <div class="stat-card" align="center">
+                            <div class="stat-number">🧩</div>
+                            <div class="stat-title">Пазл</div>
+                            <div class="stat-text">Собери изображение</div>
+                        </div>
+
+                    </div>
+                </section>
+
+
+
+                <section class="content-section" id="emotionGame" style="display:none;">
+                    <h3>😄 Угадай эмоцию</h3>
+
+                    <div id="gameArea">
+                        <img id="emotionImage" src="" alt="Эмоция" width="250">
+
+                        <div id="answers"></div>
+
+                        <p id="gameProgress"></p>
+                    </div>
+
+                    <p id="gameResult"></p>
+                    <button id="startGameBtn">Начать игру</button>
+
+                </section>
+
+
+                <section class="content-section" id="memoryGame" style="display:none;" align="center">
+                    <h3>🧠 Игра на память</h3>
+
+                    <img src="images/memory_start.jpg" id="memoryStartImage" style="max-width:300px; margin:10px auto; display:block; border-radius:10px;">
+
+                    <button id="startMemoryGameBtn">Начать игру</button>
+
+                    <p id="memoryTimer"></p>
+
+                    <div id="memoryGrid"></div>
+
+                    <p id="memoryResult"></p>
+                </section>
+
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Футер -->
+    <footer class="custom-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>Контакты</h5>
+                    <p class="mb-1">✉️ sandbox@Мail.ru</p>
+                    <p class="mb-0">📞 +7 800 555 35 55</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Адрес</h5>
+                    <a 
+      href="https://yandex.com/maps/org/chado/198362022084/?ll=37.689617%2C54.207646&utm_source=share&z=17.62/?text=ул.%20Вильямса,%24д.%2026,%20Тула"
+      target="_blank"
+      rel="noopener noreferrer"
+      title="Открыть адрес на Яндекс.Картах"
+    >
+				ул. Вильямса, д. 26, г. Тула, Россия
+	</a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Соцсети</h5>
+                    <p class="mb-0">
+                        <a href="https://t.me/gusenichka765_bot" target="_blank">Наш телеграм бот</a>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <hr style="border-color: rgba(255,255,255,0.3); margin: 20px 0;">
+                    <p class="text-center mb-0">&copy; 2026 Цифровая песочница. Все права защищены.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Кнопка "Наверх" -->
+    <button id="backToTop">Вернуться ⬆</button>
+
+      <!-- Bootstrap JS -->
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Ваши скрипты -->
+    <script src="js/меню.js"></script>
+<script> 
+(function(){
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const loginBlock = document.getElementById('loginBlock');
+    const userPanel = document.getElementById('userPanel');
+    const currentUserSpan = document.getElementById('currentUser');
+    const userStats = document.getElementById('userStats');
+
+    function updateUI(user) {
+    const gamesMenu = document.getElementById('gamesMenu');
+    const emotionGame = document.getElementById('emotionGame');
+    const memoryGame = document.getElementById('memoryGame');
+
+    if(user){
+        loginBlock.style.display = 'none';
+        userPanel.style.display = 'block';
+        currentUserSpan.textContent = user;
+
+        if(userStats) userStats.style.display = 'block';
+        if(gamesMenu) gamesMenu.style.display = 'block';
+        if(emotionGame) emotionGame.style.display = 'block';
+        if(memoryGame) memoryGame.style.display = 'block';
+
+    } else {
+        loginBlock.style.display = 'block';
+        userPanel.style.display = 'none';
+        currentUserSpan.textContent = '';
+
+        if(userStats) userStats.style.display = 'none';
+        if(gamesMenu) gamesMenu.style.display = 'none';
+        if(emotionGame) emotionGame.style.display = 'none';
+        if(memoryGame) memoryGame.style.display = 'none';
+    }
+    updateStats();
+}
+
+window.updateStats = function(){
+    const user = localStorage.getItem('currentUser');
+    if(!user) return;
+
+    let users = JSON.parse(localStorage.getItem('users') || '{}');
+    let stats = users[user]?.stats?.emotion || [];
+
+    let memoryStats = users[user]?.stats?.memory || [];
+
+    const memoryAvgEl = document.getElementById('memoryAvg');
+
+    if(memoryStats.length === 0){
+        memoryAvgEl.textContent = '0%';
+    } else {
+        const sum = memoryStats.reduce((a,b)=>a+b,0);
+        const avg = Math.round(sum / memoryStats.length);
+        memoryAvgEl.textContent = avg + '%';
+    }
+
+    const gamesPlayedEl = document.getElementById('gamesPlayed');
+    const emotionAvgEl = document.getElementById('emotionAvg');
+
+    if(stats.length === 0){
+        gamesPlayedEl.textContent = '0';
+        emotionAvgEl.textContent = '0%';
+        return;
+    }
+
+    const sum = stats.reduce((a,b)=>a+b,0);
+    const avg = Math.round(sum / stats.length);
+
+    gamesPlayedEl.textContent = stats.length;
+    emotionAvgEl.textContent = avg + '%';
+}
+
+    let currentUser = localStorage.getItem('currentUser');
+    updateUI(currentUser);
+
+    loginBtn.addEventListener('click', function(){
+        const name = document.getElementById('loginName').value.trim();
+        const pass = document.getElementById('loginPassword').value.trim();
+
+        if(!name || !pass){
+            alert('Введите имя и пароль');
+            return;
+        }
+
+        let users = JSON.parse(localStorage.getItem('users') || '{}');
+
+        if(users[name]){
+            if(users[name].password === pass){
+                currentUser = name;
+                localStorage.setItem('currentUser', name);
+                updateUI(name);
+            } else {
+                alert('Неверный пароль');
+            }
+        } else {
+            users[name] = {password: pass, stats: {}};
+            localStorage.setItem('users', JSON.stringify(users));
+
+            currentUser = name;
+            localStorage.setItem('currentUser', name);
+            updateUI(name);
+        }
+    });
+
+    logoutBtn.addEventListener('click', function(){
+        currentUser = null;
+        localStorage.removeItem('currentUser');
+
+        document.getElementById('loginName').value = '';
+        document.getElementById('loginPassword').value = '';
+
+        updateUI(null);
+        localStorage.removeItem('memoryGameStarted');
+    });
+
+})();
+
+
+// ===== ИГРА УГАДАЙ ЭМОЦИЮ =====
+
+const emotions = [
+    {img: 'images/happy.jpg', correct: 'Радость', options: ['Радость','Грусть','Злость']},
+    {img: 'images/sad.jpg', correct: 'Грусть', options: ['Страх','Грусть','Радость']},
+    {img: 'images/angry.jpg', correct: 'Злость', options: ['Злость','Удивление','Спокойствие']},
+    {img: 'images/fear.jpg', correct: 'Страх', options: ['Злость','Страх','Обида']},
+    {img: 'images/thoughtfulness.jpg', correct: 'Задумчивость', options: ['Грусть','Удивление','Задумчивость']},
+    {img: 'images/indifference.jpg', correct: 'Безразличие', options: ['Безразличие','Спокойствие','Обида']},
+    {img: 'images/calmness.jpg', correct: 'Спокойствие', options: ['Спокойствие','Радость','Страх']},
+    {img: 'images/disgust.jpg', correct: 'Отвращение', options: ['Печаль','Отвращение','Удивление']},
+    {img: 'images/sadness.jpg', correct: 'Печаль', options: ['Печаль','Страх','Обида']},
+    {img: 'images/confusion.jpg', correct: 'Смущение', options: ['Смущение','Задумчивость','Отвращение']},
+    {img: 'images/surprise.jpg', correct: 'Удивление', options: ['Радость','Удивление','Печаль']},
+    {img: 'images/shame.jpg', correct: 'Стыд', options: ['Отвращение','Страх','Стыд']},
+    {img: 'images/confidence.jpg', correct: 'Уверенность', options: ['Спокойствие','Уверенность','Грусть']},
+];
+
+let remainingQuestions = [];
+let correctAnswers = 0;
+
+const imgEl = document.getElementById('emotionImage');
+const answersEl = document.getElementById('answers');
+const progressEl = document.getElementById('gameProgress');
+const resultEl = document.getElementById('gameResult');
+
+document.getElementById('startGameBtn').addEventListener('click', startGame);
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function startGame(){
+    remainingQuestions = shuffleArray([...emotions]);
+    correctAnswers = 0;
+
+    resultEl.innerHTML = '';
+
+    // показать игру
+    imgEl.style.display = 'block';
+    answersEl.style.display = 'block';
+    progressEl.style.display = 'block';
+
+    showQuestion();
+}
+
+function showQuestion(){
+    if(remainingQuestions.length === 0){
+        finishGame();
+        return;
+    }
+
+    const q = remainingQuestions[0];
+    imgEl.src = q.img;
+
+    answersEl.innerHTML = '';
+
+    q.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.textContent = opt;
+
+        btn.onclick = () => {
+            if(opt === q.correct){
+                correctAnswers++;
+            }
+            remainingQuestions.shift();
+            showQuestion();
+        };
+
+        answersEl.appendChild(btn);
+    });
+
+    const totalQuestions = emotions.length;
+    const currentNumber = totalQuestions - remainingQuestions.length;
+    progressEl.textContent = `Вопрос ${currentNumber} из ${totalQuestions}`;
+}
+
+function finishGame(){
+    const percent = Math.round((correctAnswers / emotions.length) * 100);
+
+    // скрываем игру
+    imgEl.style.display = 'none';
+    answersEl.style.display = 'none';
+    progressEl.style.display = 'none';
+    answersEl.innerHTML = '';
+
+    // показываем результат + кнопку
+    resultEl.innerHTML = `
+        <p> </p>
+        <p>Результат: ${percent}%</p>
+    `;
+
+    saveStats(percent);
+
+    // обновление статистики СРАЗУ
+    if(typeof updateStats === 'function'){
+        updateStats();
+    }
+}
+
+function saveStats(percent){
+    const user = localStorage.getItem('currentUser');
+    if(!user) return;
+
+    let users = JSON.parse(localStorage.getItem('users') || '{}');
+
+    if(!users[user].stats.emotion){
+        users[user].stats.emotion = [];
+    }
+
+    users[user].stats.emotion.push(percent);
+
+    localStorage.setItem('users', JSON.stringify(users));
+}
+
+function scrollToGame(id){
+    document.getElementById(id).scrollIntoView({
+        behavior: 'smooth'
+    });
+}
+
+
+
+
+
+
+// ===== ИГРА НА ПАМЯТЬ =====
+
+const memoryImages = [
+    'images/happy.jpg',
+    'images/sad.jpg',
+    'images/angry.jpg',
+    'images/fear.jpg',
+    'images/surprise.jpg',
+    'images/shame.jpg'
+];
+
+let first = null;
+let second = null;
+let lock = false;
+let pairs = 0;
+let canPlay = false;
+
+const grid = document.getElementById('memoryGrid');
+const timerEl = document.getElementById('memoryTimer');
+const memoryResultEl = document.getElementById('memoryResult');
+
+document.getElementById('startMemoryGameBtn').addEventListener('click', startMemoryGame);
+
+function startMemoryGame(){
+
+    // ❗ СКРЫВАЕМ СТАРТОВУЮ КАРТИНКУ
+    const startImg = document.getElementById('memoryStartImage');
+    if(startImg) startImg.style.display = 'none';
+
+    grid.innerHTML = '';
+    memoryResultEl.innerHTML = '';
+    timerEl.textContent = '';
+
+    first = null;
+    second = null;
+    lock = false;
+    pairs = 0;
+    canPlay = false;
+
+    const allCards = [...memoryImages, ...memoryImages]
+        .sort(() => Math.random() - 0.5);
+
+    allCards.forEach(img => {
+        const card = document.createElement('div');
+        card.classList.add('memory-card');
+
+        card.innerHTML = `
+            <div class="memory-inner">
+                <div class="memory-front"></div>
+                <div class="memory-back">
+                    <img src="${img}">
+                </div>
+            </div>
+        `;
+
+        card.dataset.img = img;
+
+        // сначала ВСЕ ОТКРЫТЫ
+        card.classList.add('flipped');
+
+        card.addEventListener('click', () => flip(card));
+
+        grid.appendChild(card);
+    });
+
+    let time = 60;
+    timerEl.textContent = `Запомни! ${time} сек`;
+
+    const interval = setInterval(() => {
+        time--;
+        timerEl.textContent = `Запомни! ${time} сек`;
+
+        if(time <= 0){
+            clearInterval(interval);
+            closeAllCards();
+            canPlay = true;
+            timerEl.textContent = "Ищи пары!";
+        }
+    }, 1000);
+}
+
+function closeAllCards(){
+    document.querySelectorAll('.memory-card').forEach(c => {
+        c.classList.remove('flipped');
+    });
+}
+
+function flip(card){
+    if(!canPlay || lock) return;
+    if(card.classList.contains('matched')) return;
+
+    card.classList.add('flipped');
+
+    if(!first){
+        first = card;
+        return;
+    }
+
+    second = card;
+    lock = true;
+
+    if(first.dataset.img === second.dataset.img){
+
+        first.classList.add('matched');
+        second.classList.add('matched');
+
+        first = null;
+        second = null;
+        lock = false;
+
+        pairs++;
+
+        if(pairs === memoryImages.length){
+            finishMemoryGame();
+        }
+
+    } else {
+        setTimeout(() => {
+            first.classList.remove('flipped');
+            second.classList.remove('flipped');
+
+            first = null;
+            second = null;
+            lock = false;
+
+            closeAllCards();
+        }, 700);
+    }
+}
+
+function finishMemoryGame(){
+
+    // ❗ СКРЫВАЕМ ВСЮ ИГРУ
+    grid.innerHTML = '';
+    timerEl.textContent = '';
+
+    const percent = 100;
+
+    memoryResultEl.innerHTML = `
+        <p> </p>
+        <p>🎉 Результат: ${percent}%</p>
+        <button onclick="startMemoryGame()" class="btn-custom">
+            Начать заново
+        </button>
+    `;
+
+    saveMemoryStats(percent);
+    updateStats();
+}
+
+function saveMemoryStats(percent){
+    const user = localStorage.getItem('currentUser');
+    if(!user) return;
+
+    let users = JSON.parse(localStorage.getItem('users') || '{}');
+
+    if(!users[user].stats.memory){
+        users[user].stats.memory = [];
+    }
+
+    users[user].stats.memory.push(percent);
+
+    localStorage.setItem('users', JSON.stringify(users));
+}
+</script>
+
+</body>
+</html>

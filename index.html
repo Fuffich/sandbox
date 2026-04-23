@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цифровая песочница</title>
+        <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Ваши стили -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="custom-header" id="header">
+        <button id="menuToggle" class="menu-toggle" aria-label="Открыть меню">☰</button>
+        <div class="container">
+            <h1>Цифровая песочница</h1>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="container-fluid main-wrapper">
+        <div class="row">
+            <!-- Боковое меню -->
+            <div class="col-lg-3">
+                <nav class="sidebar-menu menu">
+                    <h3>Меню</h3>
+                    <a class="nav-link" href="index.html">Главная</a>
+                    <a class="nav-link" href="2.html">О проекте</a>
+                    <a class="nav-link" href="6.html">Цифровая песочница</a>
+                    <a class="nav-link" href="3.html">Библиотека игр</a>
+                    <a class="nav-link" href="4.html">Методическая копилка</a>
+					<a class="nav-link" href="5.html">Опрос</a>
+                </nav>
+            </div>
+
+            <!-- Основной контент -->
+            <div class="col-lg-9">
+                <!-- Секции контента -->
+                <section class="content-section">
+                    <h2 align="justify">Цифровая песочница: Мир, где особенные дети учатся понимать себя и других!</h2>
+                    <div class="transparent-text" align="justify">Инновационный проект по развитию эмоционального интеллекта и навыков общения у младших школьников с умственной отсталостью.</div>
+                    <img src="images/main.png" alt="Главная" class="img-fluid" style="max-width: 640px;">
+                    <p align="justify">
+                        Мы верим, что каждый ребенок может научиться понимать свои эмоции и находить друзей. Наша «Цифровая песочница» — это безопасное пространство, где через игру и современные технологии мы помогаем детям сделать первые и самые важные шаги в мир общения.
+                    </p>
+                    
+
+                    <section class="content-section">
+                     <h2 align="justify">Знаете ли вы? </h2>
+                    <div id="fact-box" class="fact-box" align="justify"></div>
+                                <button onclick="showRandomFact()" class="btn-custom">Узнать ещё факт</button>
+                    </section>
+
+                    <section class="content-section">
+                        <h2 align="justify">Новости и обновления</h2>
+                        <div class="news-gallery">
+
+                            <div class="news-card">
+                                <div class="news-icon">📌</div>
+                                <h3 >Анонс: Открытое занятие «Путешествие в страну Эмоций»</h3>
+                                <p align="justify">Приглашаем родителей на открытое занятие! Посмотрим, как дети знакомятся с эмоциями через игру и цифровые форматы, обсудим результаты и ответим на вопросы.</p>
+                                <small>Дата: 25 марта в 17:00</small>
+                            </div>
+
+                            <div class="news-card">
+                                <div class="news-icon">🎨</div>
+                                <h3>Идеи и находки</h3>
+                                <p align="justify">Чем занимались на этой неделе: рисовали грусть и радость пальцами в виртуальном песке, собирали «Эмоциональный куб», придумывали конец истории про обиду и примирение.</p>
+                            </div>
+
+                            <div class="news-card">
+                                <div class="news-icon">📅</div>
+                                <h3>Планы</h3>
+                                <p align="justify">В апреле запускаем цикл занятий для младшей группы. Готовим памятку для родителей «Как говорить с ребенком об эмоциях дома». Следите за обновлениями!</p>
+                            </div>
+
+                            <div class="news-card">
+                                <div class="news-icon">✨</div>
+                                <h3>Истории успеха</h3>
+                                <p align="justify">Дима, 9 лет, после занятий в «Цифровой песочнице» впервые смог попросить игрушку словами. Сейчас он использует короткие фразы и ждет ответа — для нас это победа!</p>
+                            </div>
+
+                            <div class="news-card">
+                                <div class="news-icon">💬</div>
+                                <h3>Говорят дети</h3>
+                                <p align="justify">На занятии спрашиваем: «Что делать, если друг загрустил?» Ваня, 8 лет: «Поделиться машинкой», Алиса, 10 лет: «Обнять тихонько», Егор, 7 лет: «Позвать играть».</p>
+                            </div>
+
+                            <div class="news-card">
+                                <div class="news-icon">📚</div>
+                                <h3><a href="4.html">Что почитать специалисту</a></h3>
+                                <p align="justify">Делимся полезными материалами: статьи о развитии EQ и памятка «5 игр на распознавание эмоций для занятий с детьми с УО».</p>
+                            </div>
+                        </div>
+                    </section>
+
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Футер -->
+    <footer class="custom-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>Контакты</h5>
+                    <p class="mb-1">✉️ sandbox@Мail.ru</p>
+                    <p class="mb-0">📞 +7 800 555 35 55</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Адрес</h5>
+                    <a 
+      href="https://yandex.com/maps/org/chado/198362022084/?ll=37.689617%2C54.207646&utm_source=share&z=17.62/?text=ул.%20Вильямса,%24д.%2026,%20Тула"
+      target="_blank"
+      rel="noopener noreferrer"
+      title="Открыть адрес на Яндекс.Картах"
+    >
+				ул. Вильямса, д. 26, г. Тула, Россия
+	</a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Соцсети</h5>
+                    <p class="mb-0">
+                        <a href="https://t.me/gusenichka765_bot" target="_blank">Наш телеграм бот</a>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <hr style="border-color: rgba(255,255,255,0.3); margin: 20px 0;">
+                    <p class="text-center mb-0">&copy; 2026 Цифровая песочница. Все права защищены.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Кнопка "Наверх" -->
+    <button id="backToTop">Вернуться ⬆</button>
+
+      <!-- Bootstrap JS -->
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Ваши скрипты -->
+    <script src="js/меню.js"></script>
+</body>
+</html>

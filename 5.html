@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цифровая песочница</title>
+        <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Ваши стили -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="custom-header" id="header">
+        <button id="menuToggle" class="menu-toggle" aria-label="Открыть меню">☰</button>
+        <div class="container">
+            <h1>Опрос</h1>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="container-fluid main-wrapper">
+        <div class="row">
+            <!-- Боковое меню -->
+            <div class="col-lg-3">
+                <nav class="sidebar-menu menu">
+                    <h3>Меню</h3>
+                    <a class="nav-link" href="index.html">Главная</a>
+                    <a class="nav-link" href="2.html">О проекте</a>
+                    <a class="nav-link" href="6.html">Цифровая песочница</a>
+                    <a class="nav-link" href="3.html">Библиотека игр</a>
+                    <a class="nav-link" href="4.html">Методическая копилка</a>
+                    <a class="nav-link" href="5.html">Опрос</a>
+                </nav>
+            </div>
+
+            <!-- Основной контент -->
+            <div class="col-lg-9">
+
+               <section class="content-section surveySection">
+                    <div class="container">
+                        <h2 align= "center">Насколько вы согласны?</h2>
+                        <p class="transparent-text" align= "center" >
+                            Оцените каждое утверждение по шкале от 1 до 5, где:<br>
+                            1 — Совершенно не согласен | 2 — Скорее не согласен | 3 — Затрудняюсь ответить | 4 — Скорее согласен | 5 — Полностью согласен
+                        </p>
+
+                        <form id="surveyForm">
+                            <div class="survey-question">
+                                <p align="justify">1. Мне не хватает готовых визуальных материалов (карточек, пиктограмм) для занятий по эмоциям.</p>
+                                <div class="survey-options">
+                                    <input type="radio" id="q1-1" name="q1" value="1" required><label for="q1-1">1</label>
+                                    <input type="radio" id="q1-2" name="q1" value="2"><label for="q1-2">2</label>
+                                    <input type="radio" id="q1-3" name="q1" value="3"><label for="q1-3">3</label>
+                                    <input type="radio" id="q1-4" name="q1" value="4"><label for="q1-4">4</label>
+                                    <input type="radio" id="q1-5" name="q1" value="5"><label for="q1-5">5</label>
+                                </div>
+                            </div>
+
+                            <div class="survey-question">
+                                <p align="justify">2. Подготовка к занятиям по развитию эмоционального интеллекта занимает слишком много времени.</p>
+                                <div class="survey-options">
+                                    <input type="radio" id="q2-1" name="q2" value="1" required><label for="q2-1">1</label>
+                                    <input type="radio" id="q2-2" name="q2" value="2"><label for="q2-2">2</label>
+                                    <input type="radio" id="q2-3" name="q2" value="3"><label for="q2-3">3</label>
+                                    <input type="radio" id="q2-4" name="q2" value="4"><label for="q2-4">4</label>
+                                    <input type="radio" id="q2-5" name="q2" value="5"><label for="q2-5">5</label>
+                                </div>
+                            </div>
+
+                            <div class="survey-question">
+                                <p align="justify">3. Ребенку легче понять эмоцию по схематичному рисунку, чем по реалистичной фотографии.</p>
+                                <div class="survey-options">
+                                    <input type="radio" id="q3-1" name="q3" value="1" required><label for="q3-1">1</label>
+                                    <input type="radio" id="q3-2" name="q3" value="2"><label for="q3-2">2</label>
+                                    <input type="radio" id="q3-3" name="q3" value="3"><label for="q3-3">3</label>
+                                    <input type="radio" id="q3-4" name="q3" value="4"><label for="q3-4">4</label>
+                                    <input type="radio" id="q3-5" name="q3" value="5"><label for="q3-5">5</label>
+                                </div>
+                            </div>
+
+                            <div class="survey-question">
+                                <p align="justify">4. Я замечаю прогресс у ребенка, но мне не хватает инструмента, чтобы его измерить и зафиксировать.</p>
+                                <div class="survey-options">
+                                    <input type="radio" id="q4-1" name="q4" value="1" required><label for="q4-1">1</label>
+                                    <input type="radio" id="q4-2" name="q4" value="2"><label for="q4-2">2</label>
+                                    <input type="radio" id="q4-3" name="q4" value="3"><label for="q4-3">3</label>
+                                    <input type="radio" id="q4-4" name="q4" value="4"><label for="q4-4">4</label>
+                                    <input type="radio" id="q4-5" name="q4" value="5"><label for="q4-5">5</label>
+                                </div>
+                            </div>
+
+                            <div class="survey-question">
+                                <p align="justify">5. Существующие пособия по эмоциональному развитию недостаточно учитывают индивидуальные особенности конкретного ребенка.</p>
+                                <div class="survey-options">
+                                    <input type="radio" id="q5-1" name="q5" value="1" required><label for="q5-1">1</label>
+                                    <input type="radio" id="q5-2" name="q5" value="2"><label for="q5-2">2</label>
+                                    <input type="radio" id="q5-3" name="q5" value="3"><label for="q5-3">3</label>
+                                    <input type="radio" id="q5-4" name="q5" value="4"><label for="q5-4">4</label>
+                                    <input type="radio" id="q5-5" name="q5" value="5"><label for="q5-5">5</label>
+                                </div>
+                            </div>
+
+                            <div class="survey-question">
+                                <p align="justify">6. Я бы хотел(а) получать автоматические рекомендации по следующим занятиям на основе успехов и ошибок ребенка.</p>
+                                <div class="survey-options">
+                                    <input type="radio" id="q6-1" name="q6" value="1" required><label for="q6-1">1</label>
+                                    <input type="radio" id="q6-2" name="q6" value="2"><label for="q6-2">2</label>
+                                    <input type="radio" id="q6-3" name="q6" value="3"><label for="q6-3">3</label>
+                                    <input type="radio" id="q6-4" name="q6" value="4"><label for="q6-4">4</label>
+                                    <input type="radio" id="q6-5" name="q6" value="5"><label for="q6-5">5</label>
+                                </div>
+                            </div>
+
+                            <div class="survey-question">
+                                <p align="justify">7. Использование планшета или компьютера на занятии скорее помогает удержать внимание ребенка, чем отвлекает его.</p>
+                                <div class="survey-options">
+                                    <input type="radio" id="q7-1" name="q7" value="1" required><label for="q7-1">1</label>
+                                    <input type="radio" id="q7-2" name="q7" value="2"><label for="q7-2">2</label>
+                                    <input type="radio" id="q7-3" name="q7" value="3"><label for="q7-3">3</label>
+                                    <input type="radio" id="q7-4" name="q7" value="4"><label for="q7-4">4</label>
+                                    <input type="radio" id="q7-5" name="q7" value="5"><label for="q7-5">5</label>
+                                </div>
+                            </div>
+
+                            <div class="survey-question">
+                                <p align="justify">8. Я готов(а) осваивать новые цифровые инструменты, если они реально экономят время и дают результат.</p>
+                                <div class="survey-options">
+                                    <input type="radio" id="q8-1" name="q8" value="1" required><label for="q8-1">1</label>
+                                    <input type="radio" id="q8-2" name="q8" value="2"><label for="q8-2">2</label>
+                                    <input type="radio" id="q8-3" name="q8" value="3"><label for="q8-3">3</label>
+                                    <input type="radio" id="q8-4" name="q8" value="4"><label for="q8-4">4</label>
+                                    <input type="radio" id="q8-5" name="q8" value="5"><label for="q8-5">5</label>
+                                </div>
+                            </div>
+
+                            <div class="survey-question">
+                                <p align="justify">9. Возможность распечатать сгенерированные материалы на бумаге для меня так же важна, как и работа на экране.</p>
+                                <div class="survey-options">
+                                    <input type="radio" id="q9-1" name="q9" value="1" required><label for="q9-1">1</label>
+                                    <input type="radio" id="q9-2" name="q9" value="2"><label for="q9-2">2</label>
+                                    <input type="radio" id="q9-3" name="q9" value="3"><label for="q9-3">3</label>
+                                    <input type="radio" id="q9-4" name="q9" value="4"><label for="q9-4">4</label>
+                                    <input type="radio" id="q9-5" name="q9" value="5"><label for="q9-5">5</label>
+                                </div>
+                            </div>
+
+                            <div class="survey-question">
+                                <p align="justify">10. Я бы рекомендовал(а) цифровые тренажеры эмоций своим коллегам или знакомым родителям.</p>
+                                <div class="survey-options">
+                                    <input type="radio" id="q10-1" name="q10" value="1" required><label for="q10-1">1</label>
+                                    <input type="radio" id="q10-2" name="q10" value="2"><label for="q10-2">2</label>
+                                    <input type="radio" id="q10-3" name="q10" value="3"><label for="q10-3">3</label>
+                                    <input type="radio" id="q10-4" name="q10" value="4"><label for="q10-4">4</label>
+                                    <input type="radio" id="q10-5" name="q10" value="5"><label for="q10-5">5</label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-custom">Отправить ответы</button>
+                        </form>
+
+                        <div id="surveyThanks" class="survey-thanks" style="display:none;">
+                            Результаты успешно отправлены
+                        </div>
+                    </div>
+                </section>
+				
+            </div>
+        </div>
+    </main>
+
+    <!-- Футер -->
+    <footer class="custom-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>Контакты</h5>
+                    <p class="mb-1">✉️ sandbox@Мail.ru</p>
+                    <p class="mb-0">📞 +7 800 555 35 55</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Адрес</h5>
+                    <a 
+      href="https://yandex.com/maps/org/chado/198362022084/?ll=37.689617%2C54.207646&utm_source=share&z=17.62/?text=ул.%20Вильямса,%24д.%2026,%20Тула"
+      target="_blank"
+      rel="noopener noreferrer"
+      title="Открыть адрес на Яндекс.Картах"
+    >
+				ул. Вильямса, д. 26, г. Тула, Россия
+	</a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Соцсети</h5>
+                    <p class="mb-0">
+                        <a href="https://t.me/gusenichka765_bot" target="_blank">Наш телеграм бот</a>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <hr style="border-color: rgba(255,255,255,0.3); margin: 20px 0;">
+                    <p class="text-center mb-0">&copy; 2026 Цифровая песочница. Все права защищены.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Кнопка "Наверх" -->
+    <button id="backToTop">Вернуться ⬆</button>
+
+      <!-- Bootstrap JS -->
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Ваши скрипты -->
+    <script src="js/меню.js"></script>
+<script>
+    (function() {
+        // Ждём загрузки DOM
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initSurvey);
+        } else {
+            initSurvey();
+        }
+        
+        function initSurvey() {
+            const form = document.getElementById('surveyForm');
+            const thanksDiv = document.getElementById('surveyThanks');
+            
+            if (!form) {
+                console.error('Форма с id="surveyForm" не найдена');
+                return;
+            }
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Скрываем форму
+                form.style.display = 'none';
+                
+                // Показываем благодарность
+                if (thanksDiv) {
+                    thanksDiv.style.display = 'block';
+                    thanksDiv.style.textAlign = 'center';
+                    thanksDiv.style.padding = '20px';
+                    thanksDiv.style.fontSize = '18px';
+                }
+                
+                // Дополнительно: можно очистить форму или сохранить данные в localStorage
+                console.log('Опрос отправлен (демо-режим)');
+            });
+        }
+    })();
+</script>
+</body>
+</html>
