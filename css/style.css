@@ -843,13 +843,30 @@ input[type="checkbox"] {
 /*ИГРА НА ПАМЯТЬЬЬ*/
 /* ===== MEMORY GAME ===== */
 
+/*ИГРА НА ПАМЯТЬЬЬ*/
+/* ===== MEMORY GAME ===== */
+
 #memoryGrid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(4, 85px);
+    gap: 25px;
+    justify-content: center;
     margin-top: 20px;
 }
 
+@media (max-width: 450px) {
+    #memoryGrid {
+        grid-template-columns: repeat(4, 70px);
+        gap: 18px;
+    }
+}
+
+@media (max-width: 350px) {
+    #memoryGrid {
+        grid-template-columns: repeat(4, 60px);
+        gap: 14px;
+    }
+}
 
 /* кнопка */
 #startMemoryGameBtn {
@@ -869,27 +886,19 @@ input[type="checkbox"] {
     margin-top: 10px;
 }
 
-
-
-
-
-
-
-
-
-
 /*пеереворот карточек*/
 .memory-card {
     width: 85px;
     height: 85px;
     perspective: 1000px;
+    cursor: pointer;
 }
 
 .memory-inner {
     width: 100%;
     height: 100%;
     position: relative;
-    transform-style: preserve-3d; /* 🔥 ОБЯЗАТЕЛЬНО */
+    transform-style: preserve-3d;
     transition: transform 0.6s ease;
 }
 
@@ -897,22 +906,26 @@ input[type="checkbox"] {
     transform: rotateY(180deg);
 }
 
-
 .memory-front,
 .memory-back {
     position: absolute;
-    inset: 0; /* = top:0 right:0 bottom:0 left:0 */
+    inset: 0;
     border-radius: 10px;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     box-sizing: border-box;
 }
+
 .memory-front {
     background: linear-gradient(135deg, #237C8E, #F8AFC2);
+    /* РУБАШКА ВЫШЕ КАРТИНКИ */
+    z-index: 2;
 }
 
 .memory-back {
     transform: rotateY(180deg);
+    /* КАРТИНКА НИЖЕ РУБАШКИ */
+    z-index: 1;
 }
 
 .memory-back img {
@@ -922,6 +935,280 @@ input[type="checkbox"] {
     border-radius: 10px;
 }
 
+/* Заблокированные карточки (уже совпавшие) */
+.memory-card.matched {
+    cursor: default;
+    opacity: 0.7;
+}
+
+.memory-card.matched .memory-inner {
+    transform: rotateY(180deg);
+}
+
+/* Блокировка кликов во время анимации */
+.memory-card.locked {
+    pointer-events: none;
+}
+
+
+
+/* ГЛОБАЛЬНО УБИРАЕМ СКРОЛЛ И ЦЕНТРИРУЕМ */
+body {
+    overflow-x: hidden;
+}
+
+#memoryGame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+
+
+
+
+
+
+
+/* ===== ИГРА ПАЗЛ ===== */
+
+#puzzleGame {
+    padding: 20px;
+}
+
+#startPuzzleBtn {
+    margin-top: 20px;
+    padding: 12px 25px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #237C8E, #F8AFC2);
+    color: #fff;
+    cursor: pointer;
+}
+
+.puzzle-piece {
+    width: 100px;
+    height: 100px;
+    cursor: grab;
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.puzzle-piece:active {
+    cursor: grabbing;
+}
+
+.puzzle-piece.dragging {
+    opacity: 0.5;
+}
+
+/* Подсветка зоны при наведении с кусочком */
+.drop-zone-highlight {
+    background: #c8e8ea !important;
+    box-shadow: inset 0 0 10px rgba(35,124,142,0.3);
+}
+
+/* Размещённый кусочек (нельзя перетащить обратно) */
+.puzzle-piece.placed {
+    opacity: 0.8;
+    cursor: default;
+}
+
+#puzzlePiecesArea, #puzzleDropArea {
+    transition: background 0.2s ease;
+    min-height: 400px;
+}
+
+@media (max-width: 900px) {
+    .puzzle-piece {
+        width: 70px;
+        height: 70px;
+    }
+    
+    #puzzlePiecesArea, #puzzleDropArea {
+        width: 300px;
+        min-height: 300px;
+    }
+}
+
+/* Скрываем области с пазлом до начала игры */
+#puzzlePiecesArea, #puzzleDropArea {
+    display: none;
+}
+
+/* Показываем когда игра активна */
+#puzzlePiecesArea.active, #puzzleDropArea.active {
+    display: flex;
+}
+
+
+
+
+
+/* ===== ПАЗЛ ===== */
+#puzzlePiecesArea {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    width: 320px;
+    min-height: 320px;
+    background: #f0f0f0;
+    border-radius: 20px;
+    padding: 15px;
+}
+
+#puzzleDropArea {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px;
+    justify-content: center;
+    width: 320px;
+    min-height: 320px;
+    background: #e8f4f5;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.drop-cell {
+    width: 100px;
+    height: 100px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 10px;
+    border: 2px dashed #237C8E;
+    transition: all 0.2s ease;
+}
+
+.drop-cell.cell-highlight {
+    background: #c8e8ea;
+    border: 2px solid #237C8E;
+}
+
+.puzzle-piece {
+    width: 100px;
+    height: 100px;
+    cursor: grab;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background: white;
+}
+
+.puzzle-piece:active {
+    cursor: grabbing;
+}
+
+.puzzle-piece.dragging {
+    opacity: 0.5;
+}
+
+.puzzle-piece.placed {
+    cursor: default;
+    width: 100%;
+    height: 100%;
+}
+
+.puzzle-piece canvas {
+    border-radius: 10px;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.drop-cell .puzzle-piece {
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 800px) {
+    #puzzlePiecesArea, #puzzleDropArea {
+        width: 260px;
+        min-height: 260px;
+    }
+    .puzzle-piece, .drop-cell {
+        width: 80px;
+        height: 80px;
+    }
+    #puzzleDropArea {
+        grid-template-columns: repeat(3, 80px);
+        grid-template-rows: repeat(3, 80px);
+    }
+}
+
+/* Для телефона - чтобы клон был виден */
+.puzzle-piece.dragging {
+    opacity: 0.5;
+}
+
+.drop-cell.cell-highlight {
+    background: #c8e8ea !important;
+    border: 3px solid #237C8E;
+    transform: scale(1.02);
+    transition: all 0.1s ease;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Стили только для блока методической копилки 
+МЕТОДИЧКАЯ КОПИЛКААА
+*/
+.method-block {
+    margin-top: 30px;
+}
+
+.method-block .method-item {
+    background: #fff9fb;
+    padding: 15px 20px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    border-left: 4px solid #E48AA3;
+}
+
+.method-block .method-item h4 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    color: #237C8E;
+    font-family: 'PuffPuff', sans-serif;
+}
+
+.method-block .method-item p {
+    margin: 5px 0;
+    color: #237C8E;
+    font-size: 14px;
+    text-indent: 0;
+}
+
+.method-block .method-item a {
+    color: #E48AA3;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.method-block .method-item a:hover {
+    text-decoration: underline;
+} 
 
 
 /* ФУТЕР */
