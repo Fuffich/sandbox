@@ -55,7 +55,7 @@
 
 
                 <section class="content-section" id="userStats" style="display:none;">
-                    <h3>📊 Статистика пользователя</h3>
+                    <h3>Статистика пользователя</h3>
 
                     <div class="stats-cards">
 
@@ -75,6 +75,12 @@
                             <div class="stat-number" id="memoryAvg">0%</div>
                             <div class="stat-title">Память</div>
                             <div class="stat-text">Средний результат</div>
+                        </div>
+
+                        <div class="stat-card" align="center">
+                            <div class="stat-number" id="puzzleAvg">0</div>
+                            <div class="stat-title">Пазл</div>
+                            <div class="stat-text">Среднее время сборки в секундах</div>
                         </div>
 
                         
@@ -97,7 +103,7 @@
                             <div class="stat-text">Собери пары карточек</div>
                         </div>
 
-                        <div class="stat-card" align="center">
+                        <div class="stat-card" onclick="scrollToGame('puzzleGame')" align="center">
                             <div class="stat-number">🧩</div>
                             <div class="stat-title">Пазл</div>
                             <div class="stat-text">Собери изображение</div>
@@ -109,10 +115,10 @@
 
 
                 <section class="content-section" id="emotionGame" style="display:none;">
-                    <h3>😄 Угадай эмоцию</h3>
+                    <h3>Угадай эмоцию</h3>
 
                     <div id="gameArea">
-                        <img id="emotionImage" src="" alt="Эмоция" width="250">
+                        <img  src="images/memory_start.jpg"  id="emotionImage"  alt="Эмоция" style="max-width:300px; margin:10px auto; display:block; border-radius:10px;">
 
                         <div id="answers"></div>
 
@@ -126,9 +132,9 @@
 
 
                 <section class="content-section" id="memoryGame" style="display:none;" align="center">
-                    <h3>🧠 Игра на память</h3>
+                    <h3>Игра на память</h3>
 
-                    <img src="images/memory_start.jpg" id="memoryStartImage" style="max-width:300px; margin:10px auto; display:block; border-radius:10px;">
+                    <img src="images/image_memor.jpg" id="memoryStartImage" style="max-width:300px; margin:10px auto; display:block; border-radius:10px;">
 
                     <button id="startMemoryGameBtn">Начать игру</button>
 
@@ -137,6 +143,23 @@
                     <div id="memoryGrid"></div>
 
                     <p id="memoryResult"></p>
+                </section>
+
+                <section class="content-section" id="puzzleGame" style="display:none;" align="center">
+                    <h3>Собери пазл</h3>
+
+                    <img src="images/puzzle_start.jpg" id="puzzleStartImage" style="max-width:300px; margin:10px auto; display:block; border-radius:10px;">
+
+                    <button id="startPuzzleBtn">Начать сборку</button>
+
+                    <p id="puzzleTimer" style="font-size:18px; margin-top:10px;"></p>
+
+                    <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 20px;">
+                        <div id="puzzlePiecesArea" style="width: 400px; min-height: 400px; background: #f0f0f0; border-radius: 20px; padding: 15px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
+                        <div id="puzzleDropArea" style="width: 400px; min-height: 400px; background: #e8f4f5; border-radius: 20px; padding: 15px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
+                    </div>
+
+                    <p id="puzzleResult" style="margin-top: 20px;"></p>
                 </section>
 
 
@@ -200,6 +223,7 @@
     const gamesMenu = document.getElementById('gamesMenu');
     const emotionGame = document.getElementById('emotionGame');
     const memoryGame = document.getElementById('memoryGame');
+    const puzzleGame = document.getElementById('puzzleGame'); 
 
     if(user){
         loginBlock.style.display = 'none';
@@ -210,6 +234,7 @@
         if(gamesMenu) gamesMenu.style.display = 'block';
         if(emotionGame) emotionGame.style.display = 'block';
         if(memoryGame) memoryGame.style.display = 'block';
+        if(puzzleGame) puzzleGame.style.display = 'block'; 
 
     } else {
         loginBlock.style.display = 'block';
@@ -220,6 +245,7 @@
         if(gamesMenu) gamesMenu.style.display = 'none';
         if(emotionGame) emotionGame.style.display = 'none';
         if(memoryGame) memoryGame.style.display = 'none';
+        if(puzzleGame) puzzleGame.style.display = 'none'; 
     }
     updateStats();
 }
@@ -229,12 +255,22 @@ window.updateStats = function(){
     if(!user) return;
 
     let users = JSON.parse(localStorage.getItem('users') || '{}');
-    let stats = users[user]?.stats?.emotion || [];
-
+    let emotionStats = users[user]?.stats?.emotion || [];
     let memoryStats = users[user]?.stats?.memory || [];
+    let puzzleStats = users[user]?.stats?.puzzle || [];
 
+    // Средний результат для эмоций
+    const emotionAvgEl = document.getElementById('emotionAvg');
+    if(emotionStats.length === 0){
+        emotionAvgEl.textContent = '0%';
+    } else {
+        const sum = emotionStats.reduce((a,b)=>a+b,0);
+        const avg = Math.round(sum / emotionStats.length);
+        emotionAvgEl.textContent = avg + '%';
+    }
+
+    // Средний результат для памяти
     const memoryAvgEl = document.getElementById('memoryAvg');
-
     if(memoryStats.length === 0){
         memoryAvgEl.textContent = '0%';
     } else {
@@ -243,20 +279,21 @@ window.updateStats = function(){
         memoryAvgEl.textContent = avg + '%';
     }
 
-    const gamesPlayedEl = document.getElementById('gamesPlayed');
-    const emotionAvgEl = document.getElementById('emotionAvg');
-
-    if(stats.length === 0){
-        gamesPlayedEl.textContent = '0';
-        emotionAvgEl.textContent = '0%';
-        return;
+    // 🔥 СРЕДНЕЕ ВРЕМЯ ДЛЯ ПАЗЛА
+    const puzzleAvgEl = document.getElementById('puzzleAvg');
+    if(puzzleStats.length === 0){
+        puzzleAvgEl.textContent = '0';
+    } else {
+        const sum = puzzleStats.reduce((a,b)=>a+b,0);
+        const avg = Math.round(sum / puzzleStats.length);
+        puzzleAvgEl.textContent = avg ;
     }
 
-    const sum = stats.reduce((a,b)=>a+b,0);
-    const avg = Math.round(sum / stats.length);
+    // ОБЩЕЕ ЧИСЛО ИГР (эмоции + память + пазл)
+    const gamesPlayedEl = document.getElementById('gamesPlayed');
+    const totalGames = emotionStats.length + memoryStats.length + puzzleStats.length;
+    gamesPlayedEl.textContent = totalGames;
 
-    gamesPlayedEl.textContent = stats.length;
-    emotionAvgEl.textContent = avg + '%';
 }
 
     let currentUser = localStorage.getItem('currentUser');
@@ -435,6 +472,7 @@ function scrollToGame(id){
 
 
 
+
 // ===== ИГРА НА ПАМЯТЬ =====
 
 const memoryImages = [
@@ -446,11 +484,14 @@ const memoryImages = [
     'images/shame.jpg'
 ];
 
-let first = null;
-let second = null;
-let lock = false;
-let pairs = 0;
+let firstCard = null;
+let secondCard = null;
+let lockBoard = false;
+let matchedPairs = 0;
+let mistakes = 0;           // СЧЁТЧИК ОШИБОК
 let canPlay = false;
+let flipTimeout = null;
+let totalPairs = memoryImages.length;
 
 const grid = document.getElementById('memoryGrid');
 const timerEl = document.getElementById('memoryTimer');
@@ -458,147 +499,664 @@ const memoryResultEl = document.getElementById('memoryResult');
 
 document.getElementById('startMemoryGameBtn').addEventListener('click', startMemoryGame);
 
-function startMemoryGame(){
-
-    // ❗ СКРЫВАЕМ СТАРТОВУЮ КАРТИНКУ
+function startMemoryGame() {
+    // Скрываем стартовую картинку
     const startImg = document.getElementById('memoryStartImage');
-    if(startImg) startImg.style.display = 'none';
+    if (startImg) startImg.style.display = 'none';
 
+    // Очищаем всё
+    if (flipTimeout) clearTimeout(flipTimeout);
     grid.innerHTML = '';
     memoryResultEl.innerHTML = '';
-    timerEl.textContent = '';
-
-    first = null;
-    second = null;
-    lock = false;
-    pairs = 0;
+    timerEl.innerHTML = '';
+    
+    // Сбрасываем переменные
+    firstCard = null;
+    secondCard = null;
+    lockBoard = false;
+    matchedPairs = 0;
+    mistakes = 0;
     canPlay = false;
 
-    const allCards = [...memoryImages, ...memoryImages]
-        .sort(() => Math.random() - 0.5);
+    // Создаём колоду (каждой картинки по 2)
+    const cardsArray = [...memoryImages, ...memoryImages];
+    shuffleArray(cardsArray);
 
-    allCards.forEach(img => {
+    // Создаём карточки
+    cardsArray.forEach((img, index) => {
         const card = document.createElement('div');
         card.classList.add('memory-card');
-
+        card.dataset.img = img;
+        card.dataset.index = index;
+        
         card.innerHTML = `
             <div class="memory-inner">
                 <div class="memory-front"></div>
                 <div class="memory-back">
-                    <img src="${img}">
+                    <img src="${img}" alt="карточка">
                 </div>
             </div>
         `;
-
-        card.dataset.img = img;
-
-        // сначала ВСЕ ОТКРЫТЫ
-        card.classList.add('flipped');
-
-        card.addEventListener('click', () => flip(card));
-
+        
+        card.addEventListener('click', () => onCardClick(card));
         grid.appendChild(card);
     });
 
-    let time = 60;
-    timerEl.textContent = `Запомни! ${time} сек`;
+    // ОТКРЫВАЕМ ВСЕ КАРТОЧКИ ДЛЯ ЗАПОМИНАНИЯ
+    document.querySelectorAll('.memory-card').forEach(card => {
+        card.classList.add('flipped');
+    });
 
-    const interval = setInterval(() => {
-        time--;
-        timerEl.textContent = `Запомни! ${time} сек`;
-
-        if(time <= 0){
-            clearInterval(interval);
-            closeAllCards();
-            canPlay = true;
-            timerEl.textContent = "Ищи пары!";
+    // ТАЙМЕР НА ЗАПОМИНАНИЕ
+    let time = 30; // 10 секунд на запоминание
+    timerEl.innerHTML = `Запомни картинки! ${time} сек`;
+    
+    const countdown = setInterval(() => {
+        if (!canPlay) {
+            time--;
+            timerEl.innerHTML = `Запомни картинки! ${time} сек`;
+            
+            if (time <= 0) {
+                clearInterval(countdown);
+                // ЗАКРЫВАЕМ ВСЕ КАРТОЧКИ
+                document.querySelectorAll('.memory-card').forEach(card => {
+                    card.classList.remove('flipped');
+                });
+                canPlay = true;
+                timerEl.innerHTML = "Игра началась! Найди пары";
+            }
         }
     }, 1000);
 }
 
-function closeAllCards(){
-    document.querySelectorAll('.memory-card').forEach(c => {
-        c.classList.remove('flipped');
-    });
+// Функция перемешивания
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
 }
 
-function flip(card){
-    if(!canPlay || lock) return;
-    if(card.classList.contains('matched')) return;
+// Клик по карточке
+function onCardClick(card) {
+    // Проверки: можно ли кликать
+    if (!canPlay) return;
+    if (lockBoard) return;
+    if (card === firstCard) return;
+    if (card.classList.contains('matched')) return;
+    if (card.classList.contains('flipped')) return;
 
+    // Открываем карточку
     card.classList.add('flipped');
 
-    if(!first){
-        first = card;
+    // Первая карточка
+    if (!firstCard) {
+        firstCard = card;
         return;
     }
 
-    second = card;
-    lock = true;
+    // Вторая карточка
+    secondCard = card;
+    checkMatch();
+}
 
-    if(first.dataset.img === second.dataset.img){
-
-        first.classList.add('matched');
-        second.classList.add('matched');
-
-        first = null;
-        second = null;
-        lock = false;
-
-        pairs++;
-
-        if(pairs === memoryImages.length){
+// Проверка совпадения
+function checkMatch() {
+    const isMatch = firstCard.dataset.img === secondCard.dataset.img;
+    
+    if (isMatch) {
+        // НАШЛИ ПАРУ!
+        firstCard.classList.add('matched');
+        secondCard.classList.add('matched');
+        
+        matchedPairs++;
+        
+        // Сбрасываем для следующего хода
+        firstCard = null;
+        secondCard = null;
+        
+        // Проверяем, все ли пары найдены
+        if (matchedPairs === totalPairs) {
             finishMemoryGame();
         }
-
     } else {
-        setTimeout(() => {
-            first.classList.remove('flipped');
-            second.classList.remove('flipped');
-
-            first = null;
-            second = null;
-            lock = false;
-
-            closeAllCards();
+        // ОШИБКА - увеличиваем счётчик
+        mistakes++;
+        
+        // БЛОКИРУЕМ ДОСКУ на время анимации
+        lockBoard = true;
+        
+        // Переворачиваем обратно через 700ms
+        flipTimeout = setTimeout(() => {
+            firstCard.classList.remove('flipped');
+            secondCard.classList.remove('flipped');
+            
+            firstCard = null;
+            secondCard = null;
+            lockBoard = false;
+            
+            if (flipTimeout) clearTimeout(flipTimeout);
         }, 700);
     }
 }
 
-function finishMemoryGame(){
-
-    // ❗ СКРЫВАЕМ ВСЮ ИГРУ
+// Завершение игры
+function finishMemoryGame() {
+    canPlay = false;
+    
+    // РАСЧЁТ ПРОЦЕНТА: 
+    // Максимальное количество ошибок = totalPairs (если ошибся на каждой паре)
+    // Чем больше ошибок, тем меньше процент
+    let percent;
+    
+    if (mistakes === 0) {
+        percent = 100;
+    } else if (mistakes >= totalPairs) {
+        percent = 0;
+    } else {
+        // Формула: 100 - (ошибки / макс_ошибок * 100)
+        // Максимум ошибок = totalPairs (можно ошибиться на каждой паре)
+        percent = Math.max(0, Math.round(100 - (mistakes / totalPairs) * 100));
+    }
+    
+    // Очищаем сетку
     grid.innerHTML = '';
-    timerEl.textContent = '';
-
-    const percent = 100;
-
+    timerEl.innerHTML = '';
+    
+    // Показываем результат
     memoryResultEl.innerHTML = `
-        <p> </p>
-        <p>🎉 Результат: ${percent}%</p>
-        <button onclick="startMemoryGame()" class="btn-custom">
-            Начать заново
-        </button>
+        <p>Игра завершена!</p>
+        <p>Результат: ${percent}%</p>
+        <p>Ошибок: ${mistakes}</p>
+        <p>Найдено пар: ${matchedPairs} из ${totalPairs}</p>
     `;
-
+    
+    // Сохраняем статистику
     saveMemoryStats(percent);
-    updateStats();
+    
+    // Обновляем отображение статистики
+    if (typeof updateStats === 'function') {
+        updateStats();
+    }
 }
 
-function saveMemoryStats(percent){
+// Сохранение статистики
+function saveMemoryStats(percent) {
     const user = localStorage.getItem('currentUser');
-    if(!user) return;
+    if (!user) return;
 
     let users = JSON.parse(localStorage.getItem('users') || '{}');
 
-    if(!users[user].stats.memory){
+    if (!users[user].stats.memory) {
         users[user].stats.memory = [];
     }
 
     users[user].stats.memory.push(percent);
-
     localStorage.setItem('users', JSON.stringify(users));
 }
+
+// Функция для скролла (оставляем)
+function scrollToGame(id) {
+    document.getElementById(id).scrollIntoView({
+        behavior: 'smooth'
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ===== ИГРА ПАЗЛ =====
+
+let puzzleStartTime = null;
+let puzzleTimerInterval = null;
+let puzzleGameActive = false;
+let draggedPiece = null;
+let currentPuzzleImage = null;
+let puzzleFinalSeconds = 0;
+
+// Массив с разными картинками для пазла
+const puzzleImages = [
+    'images/puzzle_image1.jpg' ,
+    'images/puzzle_image2.jpg' ,
+    'images/puzzle_image3.jpg' ,
+    'images/puzzle_image4.jpg' ,
+    'images/puzzle_image5.jpg' ,
+    'images/puzzle_image6.jpg' ,
+    'images/puzzle_image7.jpg' 
+];
+
+const puzzleStartImage = document.getElementById('puzzleStartImage');
+const startPuzzleBtn = document.getElementById('startPuzzleBtn');
+const puzzleTimerEl = document.getElementById('puzzleTimer');
+const puzzlePiecesArea = document.getElementById('puzzlePiecesArea');
+const puzzleDropArea = document.getElementById('puzzleDropArea');
+const puzzleResultEl = document.getElementById('puzzleResult');
+
+// Перемешивание массива
+function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+// Создание элемента кусочка
+function createPieceElement(pieceId, imageUrl) {
+    const piece = document.createElement('div');
+    piece.className = 'puzzle-piece';
+    piece.setAttribute('data-id', pieceId);
+    piece.setAttribute('data-cell-id', '');
+    piece.draggable = true;
+    
+    const canvas = document.createElement('canvas');
+    canvas.width = 100;
+    canvas.height = 100;
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.pointerEvents = 'none';
+    const ctx = canvas.getContext('2d');
+    
+    const img = new Image();
+    img.onload = () => {
+        const cols = 3;
+        const rows = 3;
+        const col = pieceId % cols;
+        const row = Math.floor(pieceId / cols);
+        const pw = img.width / cols;
+        const ph = img.height / rows;
+        canvas.width = 100;
+        canvas.height = 100;
+        ctx.drawImage(img, col * pw, row * ph, pw, ph, 0, 0, 100, 100);
+    };
+    img.src = imageUrl;
+    
+    piece.appendChild(canvas);
+    
+    piece.addEventListener('dragstart', handleDragStart);
+    piece.addEventListener('dragend', handleDragEnd);
+    piece.addEventListener('touchstart', handleTouchStart, { passive: false });
+    piece.addEventListener('touchmove', handleTouchMove, { passive: false });
+    piece.addEventListener('touchend', handleTouchEnd);
+    
+    return piece;
+}
+
+function handleDragStart(e) {
+    if (!puzzleGameActive) {
+        e.preventDefault();
+        return false;
+    }
+    draggedPiece = this;
+    this.classList.add('dragging');
+    e.dataTransfer.setData('text/plain', this.getAttribute('data-id'));
+    e.dataTransfer.effectAllowed = 'move';
+}
+
+function handleDragEnd(e) {
+    this.classList.remove('dragging');
+    draggedPiece = null;
+}
+
+let touchPiece = null;
+let touchClone = null;
+let startX = 0, startY = 0;
+
+function handleTouchStart(e) {
+    if (!puzzleGameActive) return;
+    e.preventDefault();
+    
+    touchPiece = this;
+    const rect = touchPiece.getBoundingClientRect();
+    const touch = e.touches[0];
+    startX = touch.clientX - rect.left;
+    startY = touch.clientY - rect.top;
+    
+    touchClone = touchPiece.cloneNode(true);
+    touchClone.style.position = 'fixed';
+    touchClone.style.left = rect.left + 'px';
+    touchClone.style.top = rect.top + 'px';
+    touchClone.style.width = rect.width + 'px';
+    touchClone.style.height = rect.height + 'px';
+    touchClone.style.zIndex = '9999';
+    touchClone.style.opacity = '0.8';
+    touchClone.style.pointerEvents = 'none';
+    document.body.appendChild(touchClone);
+    
+    touchPiece.style.opacity = '0';
+}
+
+function handleTouchMove(e) {
+    if (!touchPiece || !touchClone) return;
+    e.preventDefault();
+    
+    const touch = e.touches[0];
+    touchClone.style.left = (touch.clientX - startX) + 'px';
+    touchClone.style.top = (touch.clientY - startY) + 'px';
+    
+    const elemUnderTouch = document.elementFromPoint(touch.clientX, touch.clientY);
+    const cell = elemUnderTouch?.closest('.drop-cell');
+    
+    document.querySelectorAll('.drop-cell').forEach(c => {
+        c.classList.remove('cell-highlight');
+    });
+    
+    if (cell && cell.getAttribute('data-occupied') !== 'true') {
+        cell.classList.add('cell-highlight');
+    }
+}
+
+function handleTouchEnd(e) {
+    if (!touchPiece || !touchClone) {
+        if (touchPiece) touchPiece.style.opacity = '1';
+        if (touchClone) touchClone.remove();
+        touchPiece = null;
+        return;
+    }
+    e.preventDefault();
+    
+    const touch = e.changedTouches[0];
+    const elemUnderTouch = document.elementFromPoint(touch.clientX, touch.clientY);
+    const targetCell = elemUnderTouch?.closest('.drop-cell');
+    
+    document.querySelectorAll('.drop-cell').forEach(c => {
+        c.classList.remove('cell-highlight');
+    });
+    
+    if (targetCell && puzzleGameActive) {
+        const pieceId = parseInt(touchPiece.getAttribute('data-id'));
+        
+        if (targetCell.getAttribute('data-occupied') === 'true') {
+            const existingPiece = targetCell.querySelector('.puzzle-piece');
+            if (existingPiece) {
+                const oldPieceId = parseInt(existingPiece.getAttribute('data-id'));
+                const oldPieceClone = createPieceElement(oldPieceId, currentPuzzleImage);
+                puzzlePiecesArea.appendChild(oldPieceClone);
+                existingPiece.remove();
+            }
+        }
+        
+        const clone = createPieceElement(pieceId, currentPuzzleImage);
+        clone.classList.add('placed');
+        clone.setAttribute('data-cell-id', targetCell.getAttribute('data-cell-id'));
+        
+        targetCell.innerHTML = '';
+        targetCell.appendChild(clone);
+        targetCell.setAttribute('data-occupied', 'true');
+        targetCell.setAttribute('data-piece-id', pieceId);
+        
+        touchPiece.remove();
+        
+        checkPuzzleComplete();
+    }
+    
+    touchPiece.style.opacity = '1';
+    touchClone.remove();
+    touchPiece = null;
+    touchClone = null;
+}
+
+// Создание пустых ячеек для сборки (3x3)
+function createDropCells() {
+    puzzleDropArea.innerHTML = '';
+    for (let i = 0; i < 9; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'drop-cell';
+        cell.setAttribute('data-cell-id', i);
+        cell.setAttribute('data-occupied', 'false');
+        cell.setAttribute('data-piece-id', '');
+        
+        cell.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            cell.classList.add('cell-highlight');
+        });
+        
+        cell.addEventListener('dragleave', () => {
+            cell.classList.remove('cell-highlight');
+        });
+        
+        cell.addEventListener('drop', (e) => {
+            e.preventDefault();
+            cell.classList.remove('cell-highlight');
+            
+            if (!puzzleGameActive || !draggedPiece) return;
+            
+            const pieceId = parseInt(draggedPiece.getAttribute('data-id'));
+            
+            if (cell.getAttribute('data-occupied') === 'true') {
+                const existingPiece = cell.querySelector('.puzzle-piece');
+                if (existingPiece) {
+                    const oldPieceId = parseInt(existingPiece.getAttribute('data-id'));
+                    const oldPieceClone = createPieceElement(oldPieceId, currentPuzzleImage);
+                    puzzlePiecesArea.appendChild(oldPieceClone);
+                    existingPiece.remove();
+                }
+            }
+            
+            const clone = createPieceElement(pieceId, currentPuzzleImage);
+            clone.classList.add('placed');
+            
+            cell.innerHTML = '';
+            cell.appendChild(clone);
+            cell.setAttribute('data-occupied', 'true');
+            cell.setAttribute('data-piece-id', pieceId);
+            
+            draggedPiece.remove();
+            draggedPiece = null;
+            
+            checkPuzzleComplete();
+        });
+        
+        puzzleDropArea.appendChild(cell);
+    }
+}
+
+// Создание области с перемешанными кусочками
+function createPiecesArea() {
+    puzzlePiecesArea.innerHTML = '';
+    
+    const pieces = [];
+    for (let i = 0; i < 9; i++) pieces.push(i);
+    const shuffled = shuffleArray([...pieces]);
+    
+    shuffled.forEach(pieceId => {
+        const piece = createPieceElement(pieceId, currentPuzzleImage);
+        puzzlePiecesArea.appendChild(piece);
+    });
+}
+
+// Проверка завершения пазла
+function checkPuzzleComplete() {
+    const cells = document.querySelectorAll('.drop-cell');
+    let allCorrect = true;
+    let filledCount = 0;
+    
+    for (let i = 0; i < cells.length; i++) {
+        if (cells[i].getAttribute('data-occupied') === 'true') {
+            filledCount++;
+            const pieceId = parseInt(cells[i].getAttribute('data-piece-id'));
+            const cellId = parseInt(cells[i].getAttribute('data-cell-id'));
+            
+            if (pieceId !== cellId) {
+                allCorrect = false;
+            }
+        } else {
+            allCorrect = false;
+        }
+    }
+    
+    if (filledCount === 9 && allCorrect) {
+        // Останавливаем таймер и получаем финальное время
+        if (puzzleTimerInterval) {
+            clearInterval(puzzleTimerInterval);
+            puzzleTimerInterval = null;
+        }
+        
+        puzzleGameActive = false;
+        
+        // Берём время из таймера, который отображается
+        let finalSeconds = 0;
+        if (puzzleTimerEl) {
+            const timerText = puzzleTimerEl.innerHTML;
+            const match = timerText.match(/(\d+)\s*сек/);
+            if (match) {
+                finalSeconds = parseInt(match[1]);
+            } else {
+                finalSeconds = Math.floor((Date.now() - puzzleStartTime) / 1000);
+            }
+        }
+        
+        puzzleFinalSeconds = finalSeconds;
+        
+        puzzleTimerEl.innerHTML = `Пазл собран! Время сброки: ${finalSeconds} сек`;
+        puzzleResultEl.innerHTML = `
+        `;
+        
+        savePuzzleStats(finalSeconds);
+        if (typeof updateStats === 'function') updateStats();
+    }
+}
+
+// Запуск игры
+function startPuzzleGame() {
+    const randomIndex = Math.floor(Math.random() * puzzleImages.length);
+    currentPuzzleImage = puzzleImages[randomIndex];
+    
+    if (puzzleStartImage) {
+        puzzleStartImage.src = currentPuzzleImage;
+        puzzleStartImage.style.display = 'none';
+    }
+    
+    puzzlePiecesArea.style.display = 'flex';
+    puzzleDropArea.style.display = 'grid';
+    
+    puzzlePiecesArea.innerHTML = '';
+    puzzleDropArea.innerHTML = '';
+    puzzleResultEl.innerHTML = '';
+    puzzleGameActive = true;
+    puzzleFinalSeconds = 0;
+    
+    createDropCells();
+    createPiecesArea();
+    
+    puzzleStartTime = Date.now();
+    if (puzzleTimerInterval) clearInterval(puzzleTimerInterval);
+    puzzleTimerInterval = setInterval(() => {
+        if (puzzleGameActive) {
+            const elapsed = Math.floor((Date.now() - puzzleStartTime) / 1000);
+            puzzleTimerEl.innerHTML = `Время: ${elapsed} сек`;
+        }
+    }, 1000);
+    puzzleTimerEl.innerHTML = `Время: 0 сек`;
+}
+
+// Перезапуск игры
+function restartPuzzleGame() {
+    if (puzzleTimerInterval) {
+        clearInterval(puzzleTimerInterval);
+        puzzleTimerInterval = null;
+    }
+    
+    if (puzzleStartImage) {
+        puzzleStartImage.style.display = 'block';
+    }
+    
+    puzzlePiecesArea.style.display = 'none';
+    puzzleDropArea.style.display = 'none';
+    
+    puzzlePiecesArea.innerHTML = '';
+    puzzleDropArea.innerHTML = '';
+    puzzleResultEl.innerHTML = '';
+    puzzleTimerEl.innerHTML = '';
+    puzzleGameActive = false;
+}
+
+// Сохранение статистики
+function savePuzzleStats(seconds) {
+    const user = localStorage.getItem('currentUser');
+    if (!user) return;
+    
+    let users = JSON.parse(localStorage.getItem('users') || '{}');
+    
+    if (!users[user]) {
+        users[user] = { password: '', stats: {} };
+    }
+    if (!users[user].stats) {
+        users[user].stats = {};
+    }
+    if (!users[user].stats.puzzle) {
+        users[user].stats.puzzle = [];
+    }
+    
+    users[user].stats.puzzle.push(seconds);
+    localStorage.setItem('users', JSON.stringify(users));
+    
+    // Только это, без updatePuzzleStats
+    if (typeof updateStats === 'function') {
+        updateStats();
+    }
+}
+
+
+
+// Подключаем к глобальной статистике
+if (typeof window.updateStats === 'function') {
+    const originalUpdate = window.updateStats;
+    window.updateStats = function() {
+        originalUpdate();
+        updatePuzzleStats();
+    };
+} else {
+    window.updateStats = function() {
+        updatePuzzleStats();
+    };
+}
+
+// Инициализация
+if (startPuzzleBtn) {
+    startPuzzleBtn.addEventListener('click', startPuzzleGame);
+}
+
+// Скрываем области с пазлом при загрузке
+puzzlePiecesArea.style.display = 'none';
+puzzleDropArea.style.display = 'none';
+
+
+
+
+
+
+
+
 </script>
 
 </body>
